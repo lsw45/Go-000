@@ -1,11 +1,11 @@
-package Week02
+package main
 
 import (
-	"github.com/pkg/errors"
+	"errors"
+	"fmt"
 	"log"
+	"time"
 )
-
-//
 
 type Row struct {
 	id   int
@@ -15,14 +15,23 @@ type Row struct {
 var errNoRow = errors.New("no row")
 
 func dao() (list []Row, err error) {
-
-	return nil, nil
+	err = mockErr()
+	return []Row{{1, "sr"}}, err
 }
 
 func main() {
 	list, err := dao()
 	if err != nil {
-
+		log.Fatal(err)
 	}
-	log.Printf("result are %+v", list)
+	fmt.Printf("result are %+v", list)
+}
+
+func mockErr() error {
+	select {
+	case <-time.After(1 * time.Second):
+		return nil
+	default:
+		return errNoRow
+	}
 }
