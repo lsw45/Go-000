@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"time"
+	"strconv"
 )
 
 type Row struct {
@@ -12,26 +12,29 @@ type Row struct {
 	name string
 }
 
-var errNoRow = errors.New("no row")
+var (
+	errNoRow  = errors.New("no row")
+	errUpdate = errors.New("Update error")
+	errSelect = errors.New("select error")
+)
 
-func dao() (list []Row, err error) {
-	err = mockErr()
-	return []Row{{1, "sr"}}, err
+func daoSelect(id int) ([]Row, error) {
+	return []Row{{1, "sr"}}, errors.New("id " + strconv.Itoa(id) + " " + errNoRow.Error())
+}
+func daoUpdate() (int64, error) {
+	return 2, errors.New("id " + strconv.Itoa(2) + " " + errNoRow.Error())
 }
 
+// 为了更好的报错给调用层，dao层的select和update可以做个wrap给service层
 func main() {
-	list, err := dao()
+	list, err := daoSelect(1)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("result are %+v", list)
-}
 
-func mockErr() error {
-	select {
-	case <-time.After(1 * time.Second):
-		return nil
-	default:
-		return errNoRow
+	_, err = daoUpdate()
+	if err != nil {
+		log.Fatal(err)
 	}
 }
