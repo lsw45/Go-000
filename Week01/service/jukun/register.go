@@ -1,7 +1,8 @@
-package service
+package jukun
 
 import (
 	"encoding/json"
+	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
@@ -54,7 +55,7 @@ func RegisterWithMobile(mobile string, code string) error {
 	registerReq.Add("username", mobile)
 	registerReq.Add("verification_code", code)
 
-	resp, err := http.Post(RegisterUrl, "", strings.NewReader(registerReq.Encode()))
+	resp, err := http.Post(RegisterUrl, "application/x-www-form-urlencoded", strings.NewReader(registerReq.Encode()))
 	if err != nil {
 		return errors.Wrapf(err, "register mobile：%s fail", mobile)
 	}
@@ -73,9 +74,9 @@ func RegisterWithMobile(mobile string, code string) error {
 	}
 
 	if r.Code != RegisterSuccess {
-		LogWarn.Warnf("账号%s，注册异常：%s", mobile, r.Msg)
+		service.LogWarn.Warnf("账号：%s，注册异常：%s", mobile, r.Msg)
 	} else {
-		LogPhone.Infof("新账号：%s，注册成功", mobile)
+		service.LogPhone.Infof("新账号：%s，注册成功", mobile)
 	}
 
 	return nil

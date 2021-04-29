@@ -1,10 +1,13 @@
 package service
 
-import "testing"
+import (
+	"github.com/sirupsen/logrus"
+	"testing"
+)
 
 func TestInitLog(t *testing.T) {
 	InitLog()
-	logrus.Error()
-	LogPhone.Info()
-	LogWarn.Warn()
+	logrus.Error("error")
+	LogPhone.Info("info")
+	LogWarn.Warn("warn")
 }

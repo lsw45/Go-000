@@ -5,22 +5,16 @@ import (
 	"os"
 )
 
-var LogPhone *logrus.Logger
-var LogWarn *logrus.Logger
+var LogPhone = logrus.New()
+var LogWarn = logrus.New()
 
-func InitLog() {
-	log, _ := os.OpenFile("./log/error.txt", os.O_APPEND, 0666)
-	logrus.SetFormatter(&logrus.TextFormatter{
-		ForceColors:     true,
-		TimestampFormat: "2021-04-29 00:31:43",
-	})
+func InitLog(dir string) {
+	log, _ := os.OpenFile(dir+"/log/error.txt", os.O_APPEND, 0666)
 	logrus.SetOutput(log)
 
-	LogPhone = logrus.New()
-	phone, _ := os.OpenFile("./log/phone.txt", os.O_APPEND, 0666)
+	phone, _ := os.OpenFile(dir+"/log/phone.txt", os.O_APPEND, 0666)
 	LogPhone.SetOutput(phone)
 
-	LogWarn = logrus.New()
-	warn, _ := os.OpenFile("./log/warn.txt", os.O_APPEND, 0666)
+	warn, _ := os.OpenFile(dir+"/log/warn.txt", os.O_APPEND, 0666)
 	LogWarn.SetOutput(warn)
 }

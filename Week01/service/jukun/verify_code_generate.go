@@ -1,10 +1,9 @@
-package service
+package jukun
 
 import (
 	"bytes"
 	"encoding/json"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 )
@@ -30,13 +29,12 @@ type GenerateResp struct {
 */
 
 func GenerateCode(mobile string) error {
-	logrus.Warn("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
 	if len(mobile) == 0 {
 		return errors.New("mobile is empty")
 	}
 
 	username := `{"username":` + mobile + `}`
-	resp, err := http.Post(GenerateCodeUrl, "", bytes.NewReader([]byte(username)))
+	resp, err := http.Post(GenerateCodeUrl, "application/x-www-form-urlencoded", bytes.NewReader([]byte(username)))
 	if err != nil {
 		return errors.Wrap(err, "send code fail：获取验证码链接失效")
 	}
