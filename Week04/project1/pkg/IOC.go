@@ -13,7 +13,7 @@ func (uc *OrderUsecase) Buy(o *Order) {
 	uc.repo.SaveOrder(o)
 }
 
-var _ biz.OrderRepo = (biz.OrderRepo)(nil)
+var _ biz.OrderRepo = (*orderRepo)(nil)
 
 func NewOrderRepo() biz.OrderRepo { return new(orderRepo) }
 

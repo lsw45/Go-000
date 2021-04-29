@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -23,9 +24,7 @@ func main() {
 	})
 	server := http.Server{Addr: ":8080", Handler: mux}
 
-	g := errgroup.Group{}
-
-	g.Go(func() (err error) {
+	g := errgroup.Gro.Go(func() (err error) {
 		if err = server.ListenAndServe(); err != nil {
 			return err
 		}

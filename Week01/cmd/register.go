@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/jin-Register/model"
+	"github.com/jin-Register/service"
 	"github.com/sirupsen/logrus"
-	"os"
 	"time"
 )
 
@@ -14,28 +13,27 @@ import (
 4、提交注册信息
 */
 func main() {
-	log, _ := os.OpenFile("./log.txt", os.O_APPEND, 0666)
-	logrus.SetOutput(log)
+	service.InitLog()
 
-	mobile, err := model.GetMobile()
+	mobile, err := service.GetMobile()
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
-	err = model.GenerateCode(mobile)
+	err = service.GenerateCode(mobile)
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	retry := 1
-	code, err := model.GetCode(mobile)
+	code, err := service.GetCode(mobile)
 	if err != nil {
 		// 获取验证码失败，重试5次
 		for retry < 6 {
 			time.Sleep(time.Second * time.Duration(retry))
-			code1, err1 := model.GetCode(mobile)
+			code1, err1 := service.GetCode(mobile)
 			if err1 == nil {
 				err = err1
 				code = code1
@@ -50,7 +48,7 @@ func main() {
 		return
 	}
 
-	err = model.RegisterWithMobile(mobile, code)
+	err = service.RegisterWithMobile(mobile, code)
 	if err != nil {
 		logrus.Error(err)
 		return
