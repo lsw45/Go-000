@@ -23,12 +23,14 @@ type CodeResp struct {
     "code": 20000,
     "msg": "获取验证码成功~",
     "data": {
-        "content": "【金巨鲲】验证码811631，切勿告知他人！",
+        "content": "【金巨鲲】验证码811631,切勿告知他人！",
         "code": "811631"
     }
 }
 */
+
 func GetCode(mobile string) (code string, err error) {
+
 	resp, err := http.Get(GetCodeUrl + mobile)
 	if err != nil {
 		return "", err
@@ -38,17 +40,17 @@ func GetCode(mobile string) (code string, err error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", errors.Wrap(err, "receive code fail：应答解析失败")
+		return "", errors.Wrap(err, "小白获取验证码失败:应答解析失败")
 	}
 
 	a := &CodeResp{}
 
 	err = json.Unmarshal(body, a)
 	if err != nil {
-		return "", errors.Wrap(err, "receive code fail：反序列化失败")
+		return "", errors.Wrap(err, "小白获取验证码失败:反序列化失败")
 	}
-	if a.Code == Success {
-		return "", errors.Wrap(err, "receive code fail：验证码不正确")
+	if a.Code != Success && a.Msg != "获取验证码成功~" {
+		return "", errors.New("小白获取验证码失败:" + a.Msg)
 	}
 	return a.Data.Code, nil
 }

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-var token = "69d22f4efff4879dc84415c34bdd2aba"
+var token = "da18d2400cac388187dbcd3b22a36d1d"
 var Success = 20000
 
 var GetMobileUrl = "http://api.xiaobai188.com:188/api/getPhone?token=" + token + "&sid=163260"
@@ -43,23 +43,23 @@ type MobileResp struct {
 func GetMobile() (mobile string, err error) {
 	resp, err := http.Get(GetMobileUrl)
 	if err != nil {
-		return "", errors.Wrap(err, "get mobile fail：获取手机号链接失效")
+		return "", errors.Wrap(err, "小白获取手机号失败:获取手机号链接失效")
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", errors.Wrap(err, "get mobile fail：应答解析失败")
+		return "", errors.Wrap(err, "小白获取手机号失败:应答解析失败")
 	}
 
 	m := &MobileResp{}
 	err = json.Unmarshal(body, m)
 	if err != nil {
-		return "", errors.Wrap(err, "get mobile fail：反序列化失败")
+		return "", errors.Wrap(err, "小白获取手机号失败:反序列化失败")
 	}
 
 	if m.Code != Success {
-		return "", errors.Wrapf(err, "get mobile fail：%s", m.Msg)
+		return "", errors.Wrapf(err, "小白获取手机号失败:%s", m.Msg)
 	}
 	return m.Data[0].Phone, nil
 }

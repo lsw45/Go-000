@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jin-Register/service"
 	"github.com/jin-Register/service/jukun"
 	"github.com/jin-Register/service/xiaobai"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -15,10 +18,23 @@ import (
 3、获取验证码
 4、提交注册信息
 */
+var debug = false
+
 func main() {
 	dir, _ := os.Getwd()
 	service.InitLog(dir)
 
+	var lock sync.Mutex
+	var count = 5
+
+	for i := 0; i < count; i++ {
+		register(lock)
+	}
+
+	fmt.Println("本次批量注册任务完成")
+}
+
+func register(lock sync.Mutex) {
 	mobile, err := xiaobai.GetMobile()
 	if err != nil {
 		logrus.Error(err)
@@ -30,42 +46,45 @@ func main() {
 		return
 	}
 
-	err = jukun.GenerateCode(mobile)
+	err = jukun.GenerateCode(mobile, lock)
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
+	service.LogPhone.Info("开始注册账号:" + mobile)
 
-	retry := 1
-	code, err := xiaobai.GetCode(mobile)
-	if err != nil || len(code) == 0 {
-		// 获取验证码失败，重试5次
-		for retry < 6 {
-			time.Sleep(time.Second * time.Duration(retry))
-			code1, err1 := xiaobai.GetCode(mobile)
-			if err1 == nil {
-				err = err1
-				code = code1
-				break
-			}
-			err = err1
-			code = code1
+	GetCodeAndRegister(mobile)
+
+	return
+}
+
+var TimeOutErr = errors.New("get code timeout")
+
+func GetCodeAndRegister(mobile string) (err error) {
+	time.Sleep(3 * time.Second)
+
+	var code = ""
+	var retry = 1
+	var timeout = time.After(20 * time.Second)
+
+	for err != nil || len(code) == 0 {
+		time.Sleep(time.Second * 1) // 每1s获取一次
+		select {
+		case <-timeout:
+			service.LogPhone.Errorf("小白验证码获取失败,mobile:%s,retry:%d", mobile, retry)
+			return TimeOutErr
+		default:
 			retry++
+			code, err = xiaobai.GetCode(mobile)
+			if err == nil && len(code) > 0 {
+				err = jukun.RegisterWithMobile(mobile, code)
+				if err != nil {
+					logrus.Error(err)
+					return
+				}
+				return
+			}
 		}
 	}
-	if err != nil {
-		logrus.Error(err)
-		return
-	}
-
-	if len(code) == 0 {
-		logrus.Error("no mobile")
-		return
-	}
-
-	err = jukun.RegisterWithMobile(mobile, code)
-	if err != nil {
-		logrus.Error(err)
-		return
-	}
+	return nil
 }

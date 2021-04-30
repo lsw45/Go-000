@@ -6,7 +6,6 @@ import (
 )
 
 var LogPhone = logrus.New()
-var LogWarn = logrus.New()
 
 func InitLog(dir string) {
 	log, _ := os.OpenFile(dir+"/log/error.txt", os.O_APPEND, 0666)
@@ -14,7 +13,4 @@ func InitLog(dir string) {
 
 	phone, _ := os.OpenFile(dir+"/log/phone.txt", os.O_APPEND, 0666)
 	LogPhone.SetOutput(phone)
-
-	warn, _ := os.OpenFile(dir+"/log/warn.txt", os.O_APPEND, 0666)
-	LogWarn.SetOutput(warn)
 }

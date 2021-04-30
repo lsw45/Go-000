@@ -15,11 +15,3 @@ func TestRegisterWithMobile(t *testing.T) {
 	}
 	t.Log("success")
 }
-
-func TestGetMobile(t *testing.T) {
-	mobile, err := GetMobile()
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(mobile)
-}

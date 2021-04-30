@@ -15,8 +15,8 @@ var RegisterUrl = "https://h5api.jukunwang.com/api/user/public/register"
 var RegisterSuccess = 1
 
 var registerReq = url.Values{
-	"password": {"854043"},
-	"pay_pass": {"854043"},
+	"password": {"Aa419312"},
+	"pay_pass": {"Aa419312"},
 	"invcode":  {"54NNM"},
 	"que_id":   {"3"},
 	"answer":   {"狗"},
@@ -57,26 +57,26 @@ func RegisterWithMobile(mobile string, code string) error {
 
 	resp, err := http.Post(RegisterUrl, "application/x-www-form-urlencoded", strings.NewReader(registerReq.Encode()))
 	if err != nil {
-		return errors.Wrapf(err, "register mobile：%s fail", mobile)
+		return errors.Wrapf(err, "注册手机号失败:%s", mobile)
 	}
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return errors.Wrapf(err, "register mobile：%s fail", mobile)
+		return errors.Wrapf(err, "注册手机号失败:%s", mobile)
 	}
 
 	r := &RegisterResp{}
 	err = json.Unmarshal(body, r)
 	if err != nil {
-		return errors.Wrapf(err, "register mobile：%s fail", mobile)
+		return errors.Wrapf(err, "注册手机号失败:%s", mobile)
 	}
 
 	if r.Code != RegisterSuccess {
-		service.LogWarn.Warnf("账号：%s，注册异常：%s", mobile, r.Msg)
+		service.LogPhone.Errorf("账号:%s,注册异常:%s", mobile, r.Msg)
 	} else {
-		service.LogPhone.Infof("新账号：%s，注册成功", mobile)
+		service.LogPhone.Infof("新账号:%s,注册成功", mobile)
 	}
 
 	return nil

@@ -36,7 +36,7 @@ func main() {
 
 	resp, err := http.Post(registerUrl, "application/x-www-form-urlencoded", strings.NewReader(param.Encode()))
 	if err != nil {
-		logrus.Errorf("调用注册链接失败：%s，error：%s", mobile, err)
+		logrus.Errorf("调用注册链接失败:%s,error:%s", mobile, err)
 		return
 	}
 
@@ -44,14 +44,14 @@ func main() {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logrus.Errorf("读取失败：%s，error：%s", mobile, err)
+		logrus.Errorf("读取失败:%s,error:%s", mobile, err)
 		return
 	}
 	result := &response{}
 
 	err = json.Unmarshal(body, result)
 	if err != nil {
-		logrus.Errorf("反序列化失败：%s，error：%s", mobile, err)
+		logrus.Errorf("反序列化失败:%s,error:%s", mobile, err)
 		return
 	}
 
