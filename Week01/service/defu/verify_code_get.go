@@ -3,10 +3,12 @@ package defu
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type CodeResp struct {
@@ -20,7 +22,34 @@ type CodeResp struct {
 	} `json:"data"`
 }
 
+var TimeOutErr = errors.New("get code timeout")
+
 func GetCode(mobile, sid string) (code string, err error) {
+	time.Sleep(3 * time.Second)
+
+	var retry = 1
+	var timeout = time.After(20 * time.Second)
+
+	for err != nil || len(code) == 0 {
+		select {
+		case <-timeout:
+			service.LogPhone.Errorf("德芙验证码获取失败,mobile:%s,retry:%d", mobile, retry)
+			return "", TimeOutErr
+		default:
+			retry++
+			code, err = getCode(mobile, sid)
+			if err == nil && len(code) > 0 {
+				return code, nil
+			}
+		}
+
+		// 间隔1s获取一次
+		time.Sleep(time.Second * 1)
+	}
+	return "", TimeOutErr
+}
+
+func getCode(mobile, sid string) (code string, err error) {
 	url := "http://api.do889.com:81/api/get_message"
 	method := "POST"
 
