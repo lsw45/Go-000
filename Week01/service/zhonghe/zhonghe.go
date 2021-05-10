@@ -1,9 +1,9 @@
 package zhonghe
 
 import (
-	zhonghe2 "github.com/jin-Register/api/zhonghe"
+	"github.com/jin-Register/sdk/defu"
+	zhonghe2 "github.com/jin-Register/sdk/zhonghe"
 	"github.com/jin-Register/service"
-	"github.com/jin-Register/service/defu"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"sync"

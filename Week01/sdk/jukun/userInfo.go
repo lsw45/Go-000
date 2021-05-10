@@ -66,7 +66,7 @@ func Login(username string) (token string, err error) {
 	r := &LoginResp{}
 	err = json.Unmarshal(body, r)
 	if err != nil {
-		return "", errors.Wrapf(err, "登陆失败:%s", username)
+		return "", errors.Wrap(err, "反序列化失败")
 	}
 
 	if r.Code != Success {

@@ -1,9 +1,9 @@
 package jukun
 
 import (
-	"github.com/jin-Register/api/jukun"
+	"github.com/jin-Register/sdk/defu"
+	"github.com/jin-Register/sdk/jukun"
 	"github.com/jin-Register/service"
-	"github.com/jin-Register/service/defu"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"sync"
@@ -27,6 +27,7 @@ func NewJukun(projectId, userName, verifyCode string, mut sync.Mutex) *JuKun {
 }
 
 func (j *JuKun) Register() (err error) {
+
 	j.UserName, err = defu.GetMobile(j.ProjectId)
 	if err != nil {
 		return
@@ -35,6 +36,15 @@ func (j *JuKun) Register() (err error) {
 	if len(j.UserName) == 0 {
 		logrus.Error("no mobile")
 		return
+	}
+
+	exit, err := jukun.UserExit(j.UserName)
+	if err != nil {
+		return
+	}
+
+	if exit {
+		return errors.New("用户已存在:" + j.UserName)
 	}
 
 	err = j.GetCodeAndRegister()

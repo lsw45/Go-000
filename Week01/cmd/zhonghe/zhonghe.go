@@ -8,11 +8,13 @@ import (
 	"sync"
 )
 
-var debug = false
-var count = 5
+var count = 7
 var sid = "65429"
 
 func main() {
+
+	//service.InitLog("./log/")
+
 	dir, _ := os.Getwd()
 	service.InitLog(dir + "/log/zhonghe")
 

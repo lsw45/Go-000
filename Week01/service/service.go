@@ -14,7 +14,7 @@ func Start(platform Platform) (err error) {
 		logrus.Error(err)
 		return err
 	}
-
+	AccountLog.Infof("新账号：%+v", platform)
 	/*if kun, ok := platform.(*jukun.JuKun); ok {
 		err = kun.Register()
 		if err != nil {

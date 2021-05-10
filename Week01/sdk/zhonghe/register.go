@@ -7,11 +7,8 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strings"
 )
-
-var registerReq = url.Values{"command": {"register"}}
 
 type RegisterResp struct {
 	Ret bool   `json:"ret"`
