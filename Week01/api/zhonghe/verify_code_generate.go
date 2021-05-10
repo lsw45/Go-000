@@ -11,11 +11,7 @@ import (
 	"time"
 )
 
-var GenerateCodeUrl = "http://5g.hhml.cn/ajax/obtain"
-
 var username = url.Values{"command": {"getVcode"}}
-
-var GenerateSuccess = true
 
 type GenerateResp struct {
 	Ret bool   `json:"ret"`
@@ -53,7 +49,7 @@ func GenerateCode(mobile string, lock sync.Mutex) error {
 		return errors.Wrap(err, "众和发送验证码失败提示:反序列化失败")
 	}
 
-	if (g.Msg != "发送成功") && (g.Msg != "发送频繁，请稍后再试") {
+	if ((g.Msg != "发送成功") && (g.Msg != "发送频繁，请稍后再试")) || g.Ret != Success {
 		return errors.New("众和发送验证码失败提示:" + g.Msg + "--" + mobile)
 	}
 

@@ -30,14 +30,13 @@ type User struct {
 	Invcode      string `json:"invcode"`
 }
 
-func Login(username, password string) (token string, err error) {
-	url := "https://h5api.jukunwang.com/api/user/public/login"
+func Login(username string) (token string, err error) {
 	method := "POST"
 
 	payload := &bytes.Buffer{}
 	writer := multipart.NewWriter(payload)
 	_ = writer.WriteField("username", username)
-	_ = writer.WriteField("password", password)
+	_ = writer.WriteField("password", Passwd)
 	err = writer.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -45,7 +44,7 @@ func Login(username, password string) (token string, err error) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, UserInfoUrl, payload)
 
 	if err != nil {
 		fmt.Println(err)

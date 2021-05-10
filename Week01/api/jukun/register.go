@@ -10,10 +10,6 @@ import (
 	"strings"
 )
 
-var RegisterUrl = "https://h5api.jukunwang.com/api/user/public/register"
-
-var Success = 1
-var Passwd = "jukun123456"
 var registerReq = url.Values{
 	"password": {Passwd},
 	"pay_pass": {Passwd},

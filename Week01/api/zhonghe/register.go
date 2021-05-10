@@ -11,13 +11,7 @@ import (
 	"strings"
 )
 
-var RegisterUrl = "http://5g.hhml.cn/ajax/operate"
-
-var RegisterSuccess = true
-
-var registerReq = url.Values{
-	"command": {"register"},
-}
+var registerReq = url.Values{"command": {"register"}}
 
 type RegisterResp struct {
 	Ret bool   `json:"ret"`
@@ -30,7 +24,6 @@ type RegisterResp struct {
     "msg":"验证码错误"
 }
 */
-var field = `{"mobile":"%s","vcode":"%s","password":"zhonghe123456","repassword":"zhonghe123456","up_code":"361f428132"}`
 
 func RegisterWithMobile(mobile string, code string) error {
 	registerReq.Add("field", fmt.Sprintf(field, mobile, code))
@@ -53,7 +46,7 @@ func RegisterWithMobile(mobile string, code string) error {
 		return errors.Wrapf(err, "众和注册手机号失败:%s", mobile)
 	}
 
-	if r.Ret != RegisterSuccess {
+	if r.Ret != Success {
 		service.LogPhone.Errorf("账号:%s,注册异常:%s", mobile, r.Msg)
 	} else {
 		service.LogPhone.Infof("众和新账号:%s,注册成功", mobile)
