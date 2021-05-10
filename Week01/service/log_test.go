@@ -6,7 +6,7 @@ import (
 )
 
 func TestInitLog(t *testing.T) {
-	InitLog()
+	InitLog("D:\\workspace\\go_workspace\\Go-000\\Week01\\log\\zhonghe\\")
 	logrus.Error("error")
 	LogPhone.Info("info")
 	LogPhone.Warn("warn")

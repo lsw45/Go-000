@@ -1,4 +1,4 @@
-package jukun
+package zhonghe
 
 import (
 	"github.com/jin-Register/service"
@@ -9,7 +9,7 @@ import (
 
 func TestGenerateCode(t *testing.T) {
 	var lock sync.Mutex
-	err := GenerateCode("1672556836", lock)
+	err := GenerateCode("17056449656", lock)
 	service.InitLog("D:\\workspace\\Go-000\\Week01")
 	if err != nil {
 		logrus.Error(err)

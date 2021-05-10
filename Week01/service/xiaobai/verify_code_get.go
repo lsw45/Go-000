@@ -2,12 +2,13 @@ package xiaobai
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 )
 
-var GetCodeUrl = "http://api.xiaobai188.com:188/api/getMsg?token=" + token + "&sid=163260&phone="
+var GetCodeUrl = "http://api.xiaobai188.com:188/api/getMsg?token=" + token + "&sid=%s&phone=%s"
 
 type CodeResp struct {
 	Code int    `json:"code"`
@@ -29,9 +30,8 @@ type CodeResp struct {
 }
 */
 
-func GetCode(mobile string) (code string, err error) {
-
-	resp, err := http.Get(GetCodeUrl + mobile)
+func GetCode(mobile string, sid string) (code string, err error) {
+	resp, err := http.Get(fmt.Sprintf(GetCodeUrl, sid, mobile))
 	if err != nil {
 		return "", err
 	}

@@ -10,7 +10,7 @@ import (
 var token = "da18d2400cac388187dbcd3b22a36d1d"
 var Success = 20000
 
-var GetMobileUrl = "http://api.xiaobai188.com:188/api/getPhone?token=" + token + "&sid=163260"
+var GetMobileUrl = "http://api.xiaobai188.com:188/api/getPhone?token=" + token + "&sid="
 
 type MobileResp struct {
 	Code int    `json:"code"`
@@ -40,8 +40,8 @@ type MobileResp struct {
 }
 */
 
-func GetMobile() (mobile string, err error) {
-	resp, err := http.Get(GetMobileUrl)
+func GetMobile(sid string) (mobile string, err error) {
+	resp, err := http.Get(GetMobileUrl + sid)
 	if err != nil {
 		return "", errors.Wrap(err, "小白获取手机号失败:获取手机号链接失效")
 	}

@@ -12,11 +12,11 @@ import (
 
 var RegisterUrl = "https://h5api.jukunwang.com/api/user/public/register"
 
-var RegisterSuccess = 1
-
+var Success = 1
+var Passwd = "jukun123456"
 var registerReq = url.Values{
-	"password": {"Aa419312"},
-	"pay_pass": {"Aa419312"},
+	"password": {Passwd},
+	"pay_pass": {Passwd},
 	"invcode":  {"54NNM"},
 	"que_id":   {"3"},
 	"answer":   {"狗"},
@@ -73,7 +73,7 @@ func RegisterWithMobile(mobile string, code string) error {
 		return errors.Wrapf(err, "注册手机号失败:%s", mobile)
 	}
 
-	if r.Code != RegisterSuccess {
+	if r.Code != Success {
 		service.LogPhone.Errorf("账号:%s,注册异常:%s", mobile, r.Msg)
 	} else {
 		service.LogPhone.Infof("新账号:%s,注册成功", mobile)
