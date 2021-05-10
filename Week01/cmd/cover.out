@@ -1,0 +1,19 @@
+mode: set
+github.com/jin-Register/cmd/jukun.go:23.13,30.29 5 0
+github.com/jin-Register/cmd/jukun.go:34.2,34.47 1 0
+github.com/jin-Register/cmd/jukun.go:30.29,32.3 1 0
+github.com/jin-Register/cmd/jukun.go:37.32,39.16 2 1
+github.com/jin-Register/cmd/jukun.go:44.2,44.22 1 1
+github.com/jin-Register/cmd/jukun.go:49.2,50.16 2 1
+github.com/jin-Register/cmd/jukun.go:54.2,58.8 3 1
+github.com/jin-Register/cmd/jukun.go:39.16,42.3 2 0
+github.com/jin-Register/cmd/jukun.go:44.22,47.3 2 0
+github.com/jin-Register/cmd/jukun.go:50.16,53.3 2 0
+github.com/jin-Register/cmd/jukun.go:63.52,70.35 5 1
+github.com/jin-Register/cmd/jukun.go:89.2,89.12 1 0
+github.com/jin-Register/cmd/jukun.go:70.35,72.10 2 1
+github.com/jin-Register/cmd/jukun.go:73.18,75.21 2 0
+github.com/jin-Register/cmd/jukun.go:76.11,79.35 3 1
+github.com/jin-Register/cmd/jukun.go:79.35,81.19 2 1
+github.com/jin-Register/cmd/jukun.go:85.5,85.11 1 1
+github.com/jin-Register/cmd/jukun.go:81.19,84.6 2 0
