@@ -14,7 +14,6 @@ func Start(platform Platform) (err error) {
 		logrus.Error(err)
 		return err
 	}
-	LogPhone.Infof("注册完成：%+v", platform)
 
 	/*if kun, ok := platform.(*jukun.JuKun); ok {
 		err = kun.Register()

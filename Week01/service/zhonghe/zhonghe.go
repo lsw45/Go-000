@@ -37,6 +37,8 @@ func (z *Zhonghe) Register() (err error) {
 		return
 	}
 
+	service.LogPhone.Info("开始注册众和账号:" + z.UserName)
+
 	err = z.GetCodeAndRegister()
 	if err != nil {
 		logrus.Error(err)
@@ -52,8 +54,6 @@ func (z *Zhonghe) GetCodeAndRegister() (err error) {
 	if err != nil {
 		return errors.Wrapf(err, "GenerateCode error mobile:%s", z.UserName)
 	}
-
-	service.LogPhone.Info("开始注册众和账号:" + z.UserName)
 
 	code, err := defu.GetCode(z.UserName, z.ProjectId)
 	if err != nil {

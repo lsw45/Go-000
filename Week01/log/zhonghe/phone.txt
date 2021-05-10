@@ -1,2 +1,15 @@
 time="2021-05-10T00:48:02+08:00" level=info msg=info
 time="2021-05-10T00:48:02+08:00" level=warning msg=warn
+time="2021-05-10T16:16:10+08:00" level=info msg="开始注册众和账号:16573120596"
+time="2021-05-10T16:16:34+08:00" level=error msg="德芙验证码获取失败,mobile:16573120596,retry:21"
+time="2021-05-10T16:16:36+08:00" level=info msg="开始注册众和账号:16798849322"
+time="2021-05-10T16:17:00+08:00" level=error msg="德芙验证码获取失败,mobile:16798849322,retry:21"
+time="2021-05-10T16:17:04+08:00" level=info msg="开始注册众和账号:16573120758"
+time="2021-05-10T16:17:28+08:00" level=error msg="德芙验证码获取失败,mobile:16573120758,retry:21"
+time="2021-05-10T16:26:27+08:00" level=info msg="开始注册众和账号:17031767413"
+time="2021-05-10T16:30:27+08:00" level=error msg="德芙验证码获取失败,mobile:17031767413,retry:2"
+time="2021-05-10T16:35:50+08:00" level=info msg="开始注册众和账号:16532988162"
+time="2021-05-10T16:36:17+08:00" level=error msg="德芙验证码获取失败,mobile:16532988162,retry:3,error:德芙获取验证码失败:token失效,请重新登录"
+time="2021-05-10T16:43:37+08:00" level=info msg="开始注册众和账号:17067987148"
+time="2021-05-10T16:43:50+08:00" level=info msg="众和新账号:17067987148,注册成功"
+time="2021-05-10T16:43:50+08:00" level=info msg="注册完成：&{ProjectId:65429 UserName:17067987148 Code: Mut:{state:0 sema:0}}"

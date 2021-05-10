@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -33,7 +35,7 @@ func GetCode(mobile, sid string) (code string, err error) {
 	for err != nil || len(code) == 0 {
 		select {
 		case <-timeout:
-			service.LogPhone.Errorf("德芙验证码获取失败,mobile:%s,retry:%d", mobile, retry)
+			service.LogPhone.Errorf("德芙验证码获取失败,mobile:%s,retry:%d,error:%s", mobile, retry, err)
 			return "", TimeOutErr
 		default:
 			retry++
@@ -50,39 +52,42 @@ func GetCode(mobile, sid string) (code string, err error) {
 }
 
 func getCode(mobile, sid string) (code string, err error) {
-	url := "http://api.do889.com:81/api/get_message"
+	urls := "http://api.do889.com:81/api/get_message"
 	method := "POST"
 
-	payload := strings.NewReader(fmt.Sprintf(token+";phone_num=%s;project_type=1;project_id=%s", mobile, sid))
+	reqBody := url.QueryEscape(fmt.Sprintf("token="+token+";phone_num=%s;project_type=1;project_id=%s", mobile, sid))
+	payload := strings.NewReader(reqBody)
 
 	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, urls, payload)
 
 	if err != nil {
-		fmt.Println(err)
+		logrus.Error(err)
 		return
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		logrus.Error(err)
 		return
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		logrus.Error(err)
 		return
 	}
-	a := &CodeResp{}
 
+	a := &CodeResp{}
 	err = json.Unmarshal(body, a)
 	if err != nil {
 		return "", errors.Wrap(err, "德芙获取验证码失败:反序列化失败")
 	}
+
 	if a.Message != success {
 		return "", errors.New("德芙获取验证码失败:" + a.Message)
 	}
+
 	return a.Code, nil
 }
