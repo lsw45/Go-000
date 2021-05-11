@@ -8,9 +8,6 @@ import (
 	"net/http"
 )
 
-var token = `nqjOsBAnR2DTNXn59p+EYUh1/gsloEkFRM7hqRBIVqasKDAnXFCuRwhgwTApL2nAAMr3e738Wzf3ppNm72uoA10X3vO9/PSqMCXlDGxcHxbRrR1SdWqFucprwe4kzheJiVtJhxQwDtI/btODh6HuEAup2nB979+SjfHAw6CI19Y=`
-var success = "ok"
-
 type MobileResp struct {
 	Message string        `json:"message"`
 	Mobile  string        `json:"mobile"`
@@ -48,7 +45,7 @@ func GetMobile(sid string) (mobile string, err error) {
 	}
 
 	if m.Message != success {
-		return "", errors.Wrapf(err, "德芙获取手机号失败:%s", m.Message)
+		return "", errors.New("德芙获取手机号失败:" + m.Message)
 	}
 
 	return m.Mobile, nil

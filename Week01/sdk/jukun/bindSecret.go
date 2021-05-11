@@ -24,7 +24,8 @@ type BindResp struct {
 	} `json:"data"`
 }
 
-func BindSecret(token, code, mobile string) (secret string, err error) {
+func BindSecret(mobile, code, token string) (secret string, err error) {
+
 	secret = "GAX" + getRandomString(13)
 
 	url := "https://h5api.jukunwang.com/api/v1/user/bindgooglesecret"

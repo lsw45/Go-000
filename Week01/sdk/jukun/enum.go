@@ -1,6 +1,7 @@
 package jukun
 
 var Passwd = "jukun123456"
+var PayPasswd = "123456"
 
 var Success = 1
 
