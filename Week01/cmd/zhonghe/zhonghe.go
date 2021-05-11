@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/jin-Register/sdk/defu"
 	"github.com/jin-Register/service"
 	"github.com/jin-Register/service/zhonghe"
 	"os"
@@ -9,7 +10,6 @@ import (
 )
 
 var count = 7
-var sid = "65429"
 
 func main() {
 
@@ -20,7 +20,7 @@ func main() {
 
 	var mut sync.Mutex
 
-	var zhongStr = zhonghe.NewZhonghe(sid, "", "", mut)
+	var zhongStr = zhonghe.NewZhonghe(defu.IidZhonghe, mut)
 
 	for i := 0; i < count; i++ {
 		service.Start(zhongStr)

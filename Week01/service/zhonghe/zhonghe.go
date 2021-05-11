@@ -16,11 +16,9 @@ type Zhonghe struct {
 	Mut       sync.Mutex
 }
 
-func NewZhonghe(projectId, userName, verifyCode string, mut sync.Mutex) *Zhonghe {
+func NewZhonghe(projectId string, mut sync.Mutex) *Zhonghe {
 	return &Zhonghe{
 		ProjectId: projectId,
-		UserName:  userName,
-		Code:      verifyCode,
 		Mut:       mut,
 	}
 }

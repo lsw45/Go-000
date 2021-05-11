@@ -10,6 +10,7 @@ import (
 )
 
 type JuKun struct {
+	ProjectId  string
 	UserName   string
 	Secret     string
 	Code       string
@@ -17,13 +18,16 @@ type JuKun struct {
 	CodeRelate string
 }
 
-func NewJukun(mut sync.Mutex) *JuKun {
-	return &JuKun{Mut: mut}
+func NewJukun(projectId string, mut sync.Mutex) *JuKun {
+	return &JuKun{
+		ProjectId: projectId,
+		Mut:       mut,
+	}
 }
 
 func (j *JuKun) Register() (err error) {
 
-	j.UserName, j.CodeRelate, err = haima.GetMobile(haima.IidJukun)
+	j.UserName, j.CodeRelate, err = haima.GetMobile(j.ProjectId)
 	if err != nil {
 		return
 	}
