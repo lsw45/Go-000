@@ -44,7 +44,7 @@ func (j *JuKun) Register() (err error) {
 	}
 
 	if exit {
-		err = j.GetCodeAndChangePasswd()
+		//err = j.GetCodeAndChangePasswd()
 	} else {
 		err = j.GetCodeAndRegister()
 	}
