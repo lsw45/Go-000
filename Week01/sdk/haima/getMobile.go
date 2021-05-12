@@ -34,6 +34,10 @@ func GetMobile(Iid string) (mobile, pid string, err error) {
 		return
 	}
 
+	if string(body) == "参数错误" {
+		return "", "", errors.New("海马接码暂不可用:参数错误")
+	}
+
 	//成功返回：1|pid|提取时间|串口号|手机号|运营商|归属地
 	result := strings.Split(string(body), "|")
 

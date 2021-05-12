@@ -2,14 +2,15 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
+	"net/http"
 )
 
 type Platform interface {
-	Register() (err error)
+	Register(client http.Client) (err error)
 }
 
-func Start(platform Platform) (err error) {
-	err = platform.Register()
+func Start(platform Platform, client http.Client) (err error) {
+	err = platform.Register(client)
 	if err != nil {
 		logrus.Error(err)
 		return err

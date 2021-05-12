@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -31,7 +32,8 @@ func BindSecret(mobile, code, token string) (secret string, err error) {
 	url := "https://h5api.jukunwang.com/api/v1/user/bindgooglesecret"
 	method := "POST"
 
-	payload := strings.NewReader(fmt.Sprintf("username=%s&user_pass=null&verification_code=%s&secret=%s&mobile=%s", mobile, code, secret, mobile))
+	reader := fmt.Sprintf("username=%s&user_pass=null&verification_code=%s&secret=%s&mobile=%s", mobile, code, secret, mobile)
+	payload := strings.NewReader(reader)
 
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payload)
@@ -59,6 +61,7 @@ func BindSecret(mobile, code, token string) (secret string, err error) {
 	r := &BindResp{}
 	err = json.Unmarshal(body, r)
 	if err != nil {
+		logrus.Errorf("json.Unmarshal error req:%s,token:%s,resp:%s", reader, token, string(body))
 		return "", errors.Wrapf(err, "注册云动码失败:%s", mobile)
 	}
 

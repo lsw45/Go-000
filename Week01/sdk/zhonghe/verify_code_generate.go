@@ -31,6 +31,7 @@ func GenerateCode(mobile string, lock sync.Mutex) error {
 	time.Sleep(2 * time.Second)
 
 	username.Add("mobile", mobile)
+
 	resp, err := http.Post(GenerateCodeUrl, "application/x-www-form-urlencoded", strings.NewReader(username.Encode()))
 	if err != nil {
 		return errors.Wrap(err, "众和发送验证码失败提示:获取验证码链接失效")

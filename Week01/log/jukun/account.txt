@@ -1,1 +1,1 @@
-time="2021-05-11T21:38:54+08:00" level=info msg="新账号：&{ProjectId:163260 UserName: Secret: Code: Mut:{state:0 sema:0}}"
+time="2021-05-12T21:43:10+08:00" level=info msg="新账号：&{ProjectId:2114 UserName:16722911449 Secret:GAXDA6TCGJ3G6MDJ Code: Mut:{state:0 sema:0} CodeRelate:211416521128803}"

@@ -1,12 +1,16 @@
 package zhonghe
 
 import (
+	"context"
 	"github.com/jin-Register/sdk/defu"
 	zhonghe2 "github.com/jin-Register/sdk/zhonghe"
 	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"net"
+	"net/http"
 	"sync"
+	"time"
 )
 
 type Zhonghe struct {
@@ -23,7 +27,35 @@ func NewZhonghe(projectId string, mut sync.Mutex) *Zhonghe {
 	}
 }
 
-func (z *Zhonghe) Register() (err error) {
+func (z *Zhonghe) Register1() (err error) {
+	client := http.Client{
+		Transport: &http.Transport{
+			DialContext: func(context context.Context, netw, addr string) (net.Conn, error) {
+				//本地地址  ipaddr是本地外网IP
+				lAddr, err := net.ResolveTCPAddr("tcp", "")
+				if err != nil {
+					return nil, err
+				}
+				//被请求的地址
+				rAddr, err := net.ResolveTCPAddr(netw, addr)
+				if err != nil {
+					return nil, err
+				}
+				conn, err := net.DialTCP(netw, lAddr, rAddr)
+				if err != nil {
+					return nil, err
+				}
+				deadline := time.Now().Add(35 * time.Second)
+				conn.SetDeadline(deadline)
+				return conn, nil
+			},
+		},
+	}
+
+	return z.Register(client)
+}
+
+func (z *Zhonghe) Register(client http.Client) (err error) {
 	z.UserName, err = defu.GetMobile(z.ProjectId)
 	if err != nil {
 		logrus.Error(err)
@@ -37,7 +69,7 @@ func (z *Zhonghe) Register() (err error) {
 
 	service.LogPhone.Info("开始注册众和账号:" + z.UserName)
 
-	err = z.GetCodeAndRegister()
+	err = z.GetCodeAndRegister(client)
 	if err != nil {
 		logrus.Error(err)
 		return
@@ -46,7 +78,7 @@ func (z *Zhonghe) Register() (err error) {
 	return
 }
 
-func (z *Zhonghe) GetCodeAndRegister() (err error) {
+func (z *Zhonghe) GetCodeAndRegister(client http.Client) (err error) {
 
 	err = zhonghe2.GenerateCode(z.UserName, z.Mut)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"net/http"
 	"sync"
 )
 
@@ -25,7 +26,7 @@ func NewJukun(projectId string, mut sync.Mutex) *JuKun {
 	}
 }
 
-func (j *JuKun) Register() (err error) {
+func (j *JuKun) Register(client http.Client) (err error) {
 
 	j.UserName, j.CodeRelate, err = haima.GetMobile(j.ProjectId)
 	if err != nil {
@@ -44,7 +45,7 @@ func (j *JuKun) Register() (err error) {
 	}
 
 	if exit {
-		//err = j.GetCodeAndChangePasswd()
+		err = haima.FreeMobile(j.CodeRelate)
 	} else {
 		err = j.GetCodeAndRegister()
 	}
@@ -63,6 +64,7 @@ func (j *JuKun) GetCodeAndRegister() (err error) {
 
 	j.Code, err = haima.GetCode(j.UserName, j.CodeRelate)
 	if err != nil {
+		haima.FreeMobile(j.CodeRelate)
 		return errors.Wrapf(err, "getCode error mobile:%s", j.UserName)
 	}
 
