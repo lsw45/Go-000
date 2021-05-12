@@ -3,51 +3,54 @@ package jukun
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
-type exitResp struct {
+type changeResp struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg"`
 	Data string `json:"data"`
 }
 
-func UserExit(mobile string) (exits bool, err error) {
-
-	url := "https://h5api.jukunwang.com/api/user/public/activeuser"
+func ChangePasswd(mobile, code string) (err error) {
+	url := "https://h5api.jukunwang.com/api/user/public/passwordforget"
 	method := "POST"
 
-	payload := strings.NewReader(fmt.Sprintf("username=%s&old_pass=854043ab&new_pass=5555uuuu&new_pay_pass=5555uuuu&que_id=3&answer=x", mobile))
+	raw := fmt.Sprintf("username=%s&user_pass=%s&verification_code=%s", mobile, Passwd, code)
+	payload := strings.NewReader(raw)
 
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payload)
 
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	res, err := client.Do(req)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
-	resp := exitResp{}
+	resp := changeResp{}
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
 		return
 	}
 
-	if resp.Code == 0 && resp.Msg == "用户不存在!" {
-		return false, nil
+	if resp.Code != 0 && resp.Msg != "登录密码已修改!" {
+		return errors.New("修改登录密码失败:" + resp.Msg)
 	}
-	return true, nil
+	return nil
 }

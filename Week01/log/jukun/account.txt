@@ -1,0 +1,1 @@
+time="2021-05-11T21:38:54+08:00" level=info msg="新账号：&{ProjectId:163260 UserName: Secret: Code: Mut:{state:0 sema:0}}"
