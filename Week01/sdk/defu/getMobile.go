@@ -15,8 +15,11 @@ type MobileResp struct {
 	Data    []interface{} `json:"data"`
 }
 
-func GetMobile(sid string) (mobile string, err error) {
-	url := "http://api.do889.com:81/api/get_mobile?token=" + fmt.Sprintf(token+"&project_id=%s", sid)
+func GetMobile(sid, operator string) (mobile string, err error) {
+	url := "http://api.do889.com:81/api/get_mobile?token=" + token + "&project_id=" + sid
+	if len(operator) == 1 {
+		url += "&operator=" + operator
+	}
 	method := "GET"
 
 	client := &http.Client{}

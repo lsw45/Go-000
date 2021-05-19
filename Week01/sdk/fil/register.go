@@ -29,6 +29,7 @@ func Register(name, idCard, mobile, code string) (err error) {
 		fmt.Println(err)
 		return
 	}
+	req.Header.Add("Content-Type", "application/json")
 
 	res, err := client.Do(req)
 	if err != nil {

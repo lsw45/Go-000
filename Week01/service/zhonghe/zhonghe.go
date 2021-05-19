@@ -56,7 +56,7 @@ func (z *Zhonghe) Register1() (err error) {
 }
 
 func (z *Zhonghe) Register(client http.Client) (err error) {
-	z.UserName, err = defu.GetMobile(z.ProjectId)
+	z.UserName, err = defu.GetMobile(z.ProjectId, "")
 	if err != nil {
 		logrus.Error(err)
 		return

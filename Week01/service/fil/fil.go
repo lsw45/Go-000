@@ -31,7 +31,7 @@ func NewFilCoin(projectId string, mut sync.Mutex) *FilCoin {
 }
 
 func (f *FilCoin) Register(client http.Client) (err error) {
-	f.Mobile, err = defu.GetMobile(f.ProjectId)
+	f.Mobile, err = defu.GetMobile(f.ProjectId, "1")
 	if err != nil {
 		logrus.Error(err)
 		return
