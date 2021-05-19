@@ -46,7 +46,6 @@ func (f *FilCoin) Register(client http.Client) (err error) {
 
 	err = f.GetCodeAndRegister(client)
 	if err != nil {
-		logrus.Error(err)
 		return
 	}
 

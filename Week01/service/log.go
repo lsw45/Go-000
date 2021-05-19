@@ -9,8 +9,10 @@ var LogPhone = logrus.New()
 var AccountLog = logrus.New()
 
 func InitLog(dir string) {
+
 	log, _ := os.OpenFile(dir+"/error.txt", os.O_APPEND, 0666)
 	logrus.SetOutput(log)
+	logrus.SetReportCaller(true)
 
 	phone, _ := os.OpenFile(dir+"/phone.txt", os.O_APPEND, 0666)
 	LogPhone.SetOutput(phone)

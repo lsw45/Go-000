@@ -16,7 +16,7 @@ func SendCode(mobile string, mut sync.Mutex) (err error) {
 	url := "https://api.tcstar.cn/v3/Sms/send_reg_sms"
 	method := "POST"
 
-	payload := strings.NewReader(fmt.Sprintf(`{"phone":%s,"invitation_code":"Y690753","t":"Uc644165"}`, mobile))
+	payload := strings.NewReader(fmt.Sprintf(`{"phone":"%s","invitation_code":"%s"}`, mobile, invitation_code))
 
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payload)
