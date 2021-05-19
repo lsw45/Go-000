@@ -10,9 +10,9 @@ import (
 )
 
 type RegisterResp struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
-	Data string `json:"data"`
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
 }
 
 func Register(name, idCard, mobile, code string) (err error) {

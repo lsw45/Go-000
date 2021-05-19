@@ -16,6 +16,8 @@ import (
 
 type FilCoin struct {
 	ProjectId string
+	Name      string
+	IdCard    string
 	Mobile    string
 	Code      string
 	Mut       sync.Mutex
@@ -40,7 +42,7 @@ func (f *FilCoin) Register(client http.Client) (err error) {
 		return
 	}
 
-	service.LogPhone.Info("开始注册众和账号:" + f.Mobile)
+	service.LogPhone.Info("开始注册fil账号:" + f.Mobile)
 
 	err = f.GetCodeAndRegister(client)
 	if err != nil {
@@ -58,28 +60,28 @@ func (f *FilCoin) GetCodeAndRegister(client http.Client) (err error) {
 		return errors.Wrapf(err, "SendCode error mobile:%s", f.Mobile)
 	}
 
-	code, err := defu.GetCode(f.Mobile, f.ProjectId)
+	f.Code, err = defu.GetCode(f.Mobile, f.ProjectId)
 	if err != nil {
 		return errors.Wrapf(err, "getCode error mobile:%s", f.Mobile)
 	}
 
-	idCard, err := getIdCard()
+	f.Name, f.IdCard, err = getIdCard()
 	if err != nil {
 		return err
 	}
 
-	err = fil.Register(idCard[0], idCard[1], f.Mobile, code)
+	err = fil.Register(f.Name, f.IdCard, f.Mobile, f.Code)
 	if err != nil {
-		return errors.Wrapf(err, "register error mobile:%s,code:%s", f.Mobile, code)
+		return errors.Wrapf(err, "register error mobile:%s,code:%s", f.Mobile, f.Code)
 	}
 
 	return nil
 }
 
-func getIdCard() ([]string, error) {
+func getIdCard() (string, string, error) {
 	file, err := os.Open("./idCard.txt")
 	if err != nil {
-		return nil, errors.Wrap(err, "idCard文件打开出错")
+		return "", "", errors.Wrap(err, "idCard文件打开出错")
 	}
 	//建立缓冲区，把文件内容放到缓冲区中
 	buf := bufio.NewReader(file)
@@ -88,14 +90,14 @@ func getIdCard() ([]string, error) {
 	b, err := buf.ReadBytes('\n')
 	if err != nil {
 		if err == io.EOF {
-			return nil, errors.New("idCard.txt is empty")
+			return "", "", errors.New("idCard.txt is empty")
 		}
-		return nil, err
+		return "", "", err
 	}
 
 	idCard := strings.Split(string(b), "-")
 	if len(idCard) < 2 {
-		return nil, errors.Wrap(errors.New("idCard.txt is wrong"), string(b))
+		return "", "", errors.Wrap(errors.New("idCard.txt is wrong"), string(b))
 	}
-	return idCard, nil
+	return idCard[0], idCard[1], nil
 }

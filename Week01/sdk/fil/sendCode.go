@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/jin-Register/service"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -41,12 +42,13 @@ func SendCode(mobile string, mut sync.Mutex) (err error) {
 	r := &RegisterResp{}
 	err = json.Unmarshal(body, r)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(body)
 		return
 	}
 
-	if r.Code != 200 && r.Msg != "发送成功!" {
+	if r.Code != 200 || r.Msg != "发送成功!" {
 		service.LogPhone.Errorf("账号:%s,验证码发送异常:%s", mobile, r.Msg)
+		return errors.New(r.Msg)
 	}
 
 	return nil

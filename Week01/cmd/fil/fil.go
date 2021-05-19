@@ -10,11 +10,11 @@ import (
 	"sync"
 )
 
-var count = 7
+var count = 1
 
 func main() {
 	dir, _ := os.Getwd()
-	service.InitLog(dir + "/log/zhonghe")
+	service.InitLog(dir + "/log/fil")
 
 	var mut sync.Mutex
 
