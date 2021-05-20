@@ -7,3 +7,5 @@ time="2021-05-19T23:31:47+08:00" level=error msg="SendCode error mobile:13563262
 time="2021-05-19T23:32:28+08:00" level=error msg="SendCode error mobile:13402002922: 发送短信失败!原因:必须通过邀请注册!" func=github.com/jin-Register/service.Start file="D:/workspace/go_workspace/Go-000/Week01/service/service.go:15"
 time="2021-05-19T23:35:52+08:00" level=error msg="SendCode error mobile:18411668304: 发送短信失败!原因:邀请码过期!" func=github.com/jin-Register/service.Start file="D:/workspace/go_workspace/Go-000/Week01/service/service.go:15"
 time="2021-05-19T23:36:46+08:00" level=error msg="SendCode error mobile:18411766634: 该ip超出最大可发送次数!" func=github.com/jin-Register/service.Start file="D:/workspace/go_workspace/Go-000/Week01/service/service.go:15"
+time="2021-05-20T09:27:12+08:00" level=error msg="SendCode error mobile:13563262595: 发送短信失败!原因:手机号已注册!" func=github.com/jin-Register/service.Start file="D:/workspace/Go-000/Week01/service/service.go:15"
+time="2021-05-20T09:27:50+08:00" level=error msg="getCode error mobile:18411771554: get code timeout" func=github.com/jin-Register/service.Start file="D:/workspace/Go-000/Week01/service/service.go:15"
