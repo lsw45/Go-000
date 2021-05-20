@@ -1,16 +1,13 @@
 package fil
 
 import (
-	"bufio"
 	"github.com/jin-Register/sdk/defu"
 	"github.com/jin-Register/sdk/fil"
+	"github.com/jin-Register/sdk/idcard"
 	"github.com/jin-Register/service"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"io"
 	"net/http"
-	"os"
-	"strings"
 	"sync"
 )
 
@@ -64,10 +61,13 @@ func (f *FilCoin) GetCodeAndRegister(client http.Client) (err error) {
 		return errors.Wrapf(err, "getCode error mobile:%s", f.Mobile)
 	}
 
-	f.Name, f.IdCard, err = getIdCard()
+	userInfo, err := idcard.GetUserInfo()
 	if err != nil {
 		return err
 	}
+
+	f.Name = userInfo.Name
+	f.IdCard = userInfo.ID
 
 	err = fil.Register(f.Name, f.IdCard, f.Mobile, f.Code)
 	if err != nil {
@@ -75,28 +75,4 @@ func (f *FilCoin) GetCodeAndRegister(client http.Client) (err error) {
 	}
 
 	return nil
-}
-
-func getIdCard() (string, string, error) {
-	file, err := os.Open("./idCard.txt")
-	if err != nil {
-		return "", "", errors.Wrap(err, "idCard文件打开出错")
-	}
-	//建立缓冲区，把文件内容放到缓冲区中
-	buf := bufio.NewReader(file)
-
-	//遇到\n结束读取
-	b, err := buf.ReadBytes('\n')
-	if err != nil {
-		if err == io.EOF {
-			return "", "", errors.New("idCard.txt is empty")
-		}
-		return "", "", err
-	}
-
-	idCard := strings.Split(string(b), "-")
-	if len(idCard) < 2 {
-		return "", "", errors.Wrap(errors.New("idCard.txt is wrong"), string(b))
-	}
-	return idCard[0], idCard[1], nil
 }
